@@ -266,7 +266,11 @@ ipcRenderer.on("record", async (_event, t, sourceId, r, screen_w, screen_h) => {
             };
             try {
                 stream = await navigator.mediaDevices.getUserMedia({
-                    audio: false,
+                    audio: {
+                        mandatory: {
+                            chromeMediaSource: 'desktop',
+                        }
+                    },
                     video: {
                         // @ts-ignore
                         mandatory: {
