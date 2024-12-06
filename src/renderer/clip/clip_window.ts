@@ -2815,6 +2815,7 @@ const toolBarEl = frame("tool", {
             { value: "baidu", name: t("百度") },
             { value: "yandex", name: "Yandex" },
             { value: "google", name: "Google" },
+            { value: "tiangong", name: "天工AI" },
             { value: "ai", name: "AI" },
         ]).class("side_select"),
     },

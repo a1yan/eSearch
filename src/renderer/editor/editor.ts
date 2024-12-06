@@ -1723,7 +1723,7 @@ window.onbeforeunload = () => {
 
 function searchImg(
     simg: string,
-    type: "baidu" | "yandex" | "google" | (string & {}),
+    type: "baidu" | "yandex" | "google" | "tiangong" | (string & {}),
     callback: (err: Error, url: string) => void,
 ) {
     const img = simg.replace(/^data:image\/\w+;base64,/, "");
@@ -1735,6 +1735,11 @@ function searchImg(
             break;
         case "yandex":
             yandex(img, (err, url) => {
+                callback(err, url);
+            });
+            break;
+        case "tiangong":
+            tiangong(img, (err, url) => {
                 callback(err, url);
             });
             break;
@@ -1771,6 +1776,35 @@ function post(
 }
 
 function baidu(image: string, callback: (err: Error, url: string) => void) {
+    const form = new FormData();
+    const bstr = window.atob(image);
+    let n = bstr.length;
+    const u8arr = new Uint8Array(n);
+    while (n--) {
+        u8arr[n] = bstr.charCodeAt(n);
+    }
+    form.append(
+        "image",
+        new Blob([u8arr], { type: "image/png" }),
+        "eSearch.png",
+    );
+    form.append("from", "pc");
+    post("https://graph.baidu.com/upload", { body: form }, (err, result) => {
+        if (err) {
+            callback(err, null);
+            return;
+        }
+        if (result.msg !== "Success") {
+            callback(new Error(JSON.stringify(err)), null);
+            return;
+        }
+        console.log(result.data.url);
+        callback(null, result.data.url);
+    });
+}
+
+function tiangong(image: string, callback: (err: Error, url: string) => void) {
+    alert('tiangong')
     const form = new FormData();
     const bstr = window.atob(image);
     let n = bstr.length;
