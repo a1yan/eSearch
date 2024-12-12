@@ -1205,8 +1205,9 @@ ipcRenderer.on("text", (_event, name: string, list: MainWinType) => {
         searchImg(list.content, list.arg0, (err: Error, url: string) => {
             if (url) {
                 editor.push("");
-                openLink("url", url);
-                if (浏览器打开 || concise) {
+                openLink("url", url, 浏览器打开);
+                if (浏览器打开) {
+                    // 主页面作为临时上传图片的工具，应自动关闭，不管有没有设置自动关闭标签
                     closeWindow();
                 }
             }
